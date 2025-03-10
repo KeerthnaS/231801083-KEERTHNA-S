@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Signup Form</h2>
+        <form id="signupForm" onsubmit="return validateForm()">
+            <input type="text" id="firstName" placeholder="First Name" required>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="date" id="dob" required>
+            <input type="number" id="age" placeholder="Age" required>
+            
+            <label>Gender:</label>
+            <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female
+            
+            <input type="tel" id="phone" placeholder="Phone Number" required>
+            <textarea id="address" placeholder="Address" required></textarea>
+            
+            <button type="submit">Signup</button>
+        </form>
+    </div>
+    
+    <script>
+        function validateForm() {
+            let firstName = document.getElementById("firstName").value;
+            let lastName = document.getElementById("lastName").value;
+            let email = document.getElementById("email").value;
+            let dob = document.getElementById("dob").value;
+            let age = document.getElementById("age").value;
+            let gender = document.querySelector('input[name="gender"]:checked');
+            let phone = document.getElementById("phone").value;
+            let address = document.getElementById("address").value;
+            
+            let namePattern = /^[A-Za-z]{4,}$/;
+            let lastNamePattern = /^[A-Za-z]{1,}$/;
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            let phonePattern = /^[0-9]{10}$/;
+            let agePattern = /^[0-9]{2}$/;
+            
+            if (!namePattern.test(firstName)) {
+                alert("First name must be at least 4 characters and contain only alphabets.");
+                return false;
+            }
+            if (!lastNamePattern.test(lastName)) {
+                alert("Last name must contain only alphabets.");
+                return false;
+            }
+            if (!emailPattern.test(email)) {
+                alert("Enter a valid email in format name@domain.com");
+                return false;
+            }
+            if (dob === "") {
+                alert("Please select a valid date of birth.");
+                return false;
+            }
+            if (!agePattern.test(age)) {
+                alert("Age must be a two-digit number.");
+                return false;
+            }
+            if (!gender) {
+                alert("Please select your gender.");
+                return false;
+            }
+            if (!phonePattern.test(phone)) {
+                alert("Phone number must contain exactly 10 digits.");
+                return false;
+            }
+            if (address.trim() === "") {
+                alert("Address cannot be empty.");
+                return false;
+            }
+            
+            displayData();
+            return false;
+        }
+        
+        function displayData() {
+            let table = document.getElementById("dataTable");
+            let row = table.insertRow(-1);
+            let cells = ["firstName", "lastName", "email", "dob", "age", "gender", "phone", "address"];
+            
+            for (let i = 0; i < cells.length; i++) {
+                let cell = row.insertCell(i);
+                if (cells[i] === "gender") {
+                    cell.innerHTML = document.querySelector('input[name="gender"]:checked').value;
+                } else {
+                    cell.innerHTML = document.getElementById(cells[i]).value;
+                }
+            }
+            document.getElementById("signupForm").reset();
+        }
+    </script>
+</body>
+</html>
